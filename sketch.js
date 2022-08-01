@@ -8,7 +8,6 @@ function setup() {
     for (let i = 0; i < num; i++) {
     	boids.push(new Boid());
     }
-    framerateP = createP('framerate: ');
     for (let i = 0; i < 1; i++) {
         // Obstacle(x, y, r, color)
         obstacles.push(new Obstacle(random(width*(2/3), width*(7/8)), random(height*(2/3), height*(7/8)), 10, 150));
