@@ -1,6 +1,5 @@
 class Boid {
     constructor(index) {
-        // this.position = createVector(width/2, random(height*(3/4), height*(3/4) + 50));
         this.position = createVector(random(width/16, width/8), random(height*(3/4), height*(3/4) + 50));
         this.size = 5;
         this.heading = createVector();
@@ -48,72 +47,18 @@ class Boid {
         return F;
     }
 
-    // overlapPos(boids) {
-    //     for (let other of boids) {
-    //         let d = dist(this.position.x, this.position.y,
-    //             other.position.x, other.position.y);
-    //         if ( other != this && d - other.size < this.size) {
-    //             // print('Boids-' + this.index + ' is overlapping with Boids-' + other.index);
-    //             return true;
-    //         }
-    //     }
-    // }
-
-    // overlapping(boids) {
-    //     for (let other of boids) {
-    //         let d = dist(this.position.x, this.position.y,
-    //             other.position.x, other.position.y);
-    //         if ( other != this && d - other.size < this.size) {
-    //             // print('Boids-' + this.index + ' is overlapping with Boids-' + other.index);
-    //             return true;
-    //         }
-    //     }
-    // }
-
-    // overlapIn(boids) {
-    //     for (let other of boids) {
-    //         let d = dist(this.position.x, this.position.y,
-    //             other.position.x, other.position.y);
-    //         if ( other != this && d - other.size < this.size) {
-    //             // print('Boids-' + this.index + ' is overlapping with Boids-' + other.index);
-    //             return other.index;
-    //         }
-    //     }
-    // }
-
     check(obs) {
         let checked = [];
-        // print('Obs be counted    : ' + obs.length);
-        // print('Obs count (before): ' + checked.length);
         for (let o of obs) {
             let d = dist(this.position.x, this.position.y,
                 o.position.x, o.position.y);
             // let r = this.rij(this.position, o.position);
-            // print('rsens > |rio|: ' + (this.sensing > r));
-            // print(' dobs <= rsens : ' + (d <= this.sensing));
             // print('|rio| <= rsens : ' + (r <= this.sensing)); false? why?
             // if(r <= this.sensing) {
             if (d - o.radius <= this.sensing) {
                 checked.push(o);
-                // push();
-                    // let r = this.rij(this.position, o.position);
-                    // let angle = r.heading();
-                    // let newr = createVector(-o.radius*cos(angle), -o.radius*sin(angle));
-                    // r.add(newr);
-                    // strokeWeight(1);
-                    // stroke(255,0,0);
-                    // line(o.position.x, o.position.y, o.position.x + newr.x, o.position.y + newr.y);
-                    // strokeWeight(1);
-                    // stroke(155);
-                    // line(this.position.x, this.position.y, this.position.x + r.x, this.position.y + r.y);
-                    // if (degrees(angle) >= 135 ) {
-                    //     noLoop();
-                    //     print('Process terminated');
-                    // }
-                // pop();
             }
         }
-        // print('Obs count (after) : ' + checked.length);
         return checked;
     }
 
@@ -124,10 +69,7 @@ class Boid {
             let r = this.rij(this.position, o.position);
             let newr = createVector(o.radius*cos(r.heading()), o.radius*sin(r.heading()));
             r.sub(newr);
-            // print(' rio : (' + r.x + ', ' + r.y + ')');
-            // print('|rio|: ' + r.mag());
-            // re-check the formula below
-            r.mult(o.Eobs*(pow(sigmaobs/r.mag(),2*o.alphaLJ) - 2*pow(sigmaobs/r.mag(),o.alphaLJ)));
+            r.mult(o.Eobs*(pow(sigmaobs/r.mag(),2*o.alphaLJ) - 2*pow(sigmaobs/r.mag(),o.alphaLJ))); // re-check the formula
             F.add(r);
         }
         return F;
@@ -155,7 +97,7 @@ class Boid {
         return ds;
     }
 
-    // update(x, y) {
+    // update(x, y) { // use this to moves the boids/individuals based on mouse position
     //     if(x > width) {x = width;}
     //     if(y > height) {y = height;}
     //     this.position.x = x;
@@ -166,13 +108,6 @@ class Boid {
         this.heading.add(this.velocity);
         this.heading.normalize();
         this.heading.mult(20);
-        // if(this.overlapping(boids)) {
-        //     let vOverlap = this.rij(this.position, boids[this.overlapIn(boids)].position).normalize();
-        //     print(vOverlap.x + ', ' + vOverlap.y);
-        //     this.maxSpeed = 2 + this.Fg(vOverlap);
-        // } else {
-        //     this.maxSpeed = 2;
-        // }
         this.velocity.limit(this.maxSpeed);
         this.position.add(this.velocity);
         this.acceleration.mult(0);
