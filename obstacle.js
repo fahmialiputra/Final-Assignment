@@ -3,8 +3,8 @@ class Obstacle {
         this.position = createVector(x,y);
         this.radius = size;
         this.color = color;
-        this.alphaLJ = 0.975;
-        this.Eobs = 0.01;
+        this.alphaLJ = alphaLJ;
+        this.Eobs = Eobs;
     }
 
     show() {
