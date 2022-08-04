@@ -4,7 +4,7 @@ class Obstacle {
         this.radius = size;
         this.color = color;
         this.alphaLJ = 0.975;
-        this.pobs = 0.01;
+        this.Eobs = 0.01;
     }
 
     show() {
