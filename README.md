@@ -1,4 +1,4 @@
-# Final-Assignment
+# What's this
 This is my code for my final assignment for achieving bachelor's degree.
 
 A flocking simulation from an article titled:
