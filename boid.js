@@ -127,7 +127,7 @@ class Boid {
             // print(' rio : (' + r.x + ', ' + r.y + ')');
             // print('|rio|: ' + r.mag());
             // re-check the formula below
-            r.mult(o.pobs*(pow(sigmaobs/r.mag(),2*o.alphaLJ) - 2*pow(sigmaobs/r.mag(),o.alphaLJ)));
+            r.mult(o.Eobs*(pow(sigmaobs/r.mag(),2*o.alphaLJ) - 2*pow(sigmaobs/r.mag(),o.alphaLJ)));
             F.add(r);
         }
         return F;
