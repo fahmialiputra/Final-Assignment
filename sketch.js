@@ -16,10 +16,10 @@ function setup() {
         // }
         aveY += boids[i].position.y;
     }
-    obstacles.push(new Obstacle(width*(5/8), aveY/num, 10, 150));
-    obstacles.push(new Obstacle(width*(5/8) + 50, aveY/num + 30, 10, 150));
-    obstacles.push(new Obstacle(width*(5/8) + 50, aveY/num - 30, 10, 150));
-    obstacles.push(new Obstacle(width*(5/8) + 120, aveY/num, 10, 150));
+    obstacles.push(new Obstacle(width*(5/8), aveY/num, 10, 0.975, 0.01, 150));
+    obstacles.push(new Obstacle(width*(5/8) + 50, aveY/num + 30, 10, 0.975, 0.01, 150));
+    obstacles.push(new Obstacle(width*(5/8) + 50, aveY/num - 30, 10, 0.975, 0.01, 150));
+    obstacles.push(new Obstacle(width*(5/8) + 120, aveY/num, 10, 0.975, 0.01, 150));
 }
 
 function draw() {
@@ -37,6 +37,8 @@ function draw() {
         obs.show();
     }
     for (let boid of boids) {
+        // boid.update(mouseX, mouseY); // use this to moves the boids/individuals based on mouse position
+        // boid.check(obstacles);
         boid.update(boids,boid.check(obstacles));
         boid.show();
         boid.change = false;
