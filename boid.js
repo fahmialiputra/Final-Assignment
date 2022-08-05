@@ -125,7 +125,8 @@ class Boid {
     update(boids,obs) {
         // this.acceleration.add(this.Ftotal(boids,obs));
         // this.velocity.add(this.acceleration);
-        this.heading.add(this.velocity);
+        // this.heading.add(this.velocity);
+        this.heading.add(this.vy(this.Ftotal(boids,obs)));
         this.heading.normalize();
         this.heading.mult(20);
         // this.velocity.limit(this.maxSpeed);
