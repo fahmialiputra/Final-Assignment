@@ -18,9 +18,9 @@ function setup() {
     }
     // Obstacle(x, y, radius, alphaLJ, Eobs, color)
     obstacles.push(new Obstacle(width*(5/8), aveY/num, 10, 0.975, 0.01, 150));
-//     obstacles.push(new Obstacle(width*(5/8) + 50, aveY/num + 30, 10, 0.975, 0.01, 150));
-//     obstacles.push(new Obstacle(width*(5/8) + 50, aveY/num - 30, 10, 0.975, 0.01, 150));
-//     obstacles.push(new Obstacle(width*(5/8) + 120, aveY/num, 10, 0.975, 0.01, 150));
+    // obstacles.push(new Obstacle(width*(5/8) + 50, aveY/num + 30, 10, 0.975, 0.01, 150));
+    // obstacles.push(new Obstacle(width*(5/8) + 50, aveY/num - 30, 10, 0.975, 0.01, 150));
+    // obstacles.push(new Obstacle(width*(5/8) + 120, aveY/num, 10, 0.975, 0.01, 150));
 }
 
 function draw() {
