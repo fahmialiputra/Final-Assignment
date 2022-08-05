@@ -101,7 +101,7 @@ class Boid {
     }
 
     vy(Fi) {
-        return this.vx(Fi)*tan(thetai(Fi));
+        return this.vx(Fi)*tan(this.thetai(Fi));
     } 
 
     coherency(boids){
