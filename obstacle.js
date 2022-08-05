@@ -1,7 +1,7 @@
 class Obstacle {
-    constructor(x, y, size, alphaLJ, Eobs, color) {
+    constructor(x, y, radius, alphaLJ, Eobs, color) {
         this.position = createVector(x,y);
-        this.radius = size;
+        this.radius = radius;
         this.color = color;
         this.alphaLJ = alphaLJ;
         this.Eobs = Eobs;
