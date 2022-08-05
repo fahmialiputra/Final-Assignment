@@ -5,7 +5,7 @@ class Boid {
         this.heading = createVector();
         this.sensing = 20; // sensing radius
         this.velocity = createVector();
-        this.acceleration = createVector();
+        // this.acceleration = createVector();
         this.maxSpeed = 2;
         this.v0 = 0.5;
         this.alpha = 0.1;
@@ -83,8 +83,26 @@ class Boid {
         F.add(this.Fi(boids));
         F.add(this.Fg(vd));
         F.sub(this.Fobs(obs));
-        return F;
+        return F; // returns a vector number
     }
+
+    vx(Fi) { // xi vector function
+        return this.v0 + this.alpha*p5.Vector.dot(
+            p5.Vector.add(Fi, p5.Vector.mult(this.Er,this.Dr)),
+            this.unitvector
+        ); // returns a scalar number
+    }
+
+    thetai(Fi) {
+        return this.betha*p5.Vector.dot(
+            p5.Vector.add(Fi, p5.Vector.mult(this.Er,this.Dr)),
+            this.unitvector_perpendicular
+        ) + this.Dt*this.Et;
+    }
+
+    vy(Fi) {
+        return this.vx(Fi)*tan(thetai(Fi));
+    } 
 
     coherency(boids){
         let ds = 0;
@@ -105,14 +123,17 @@ class Boid {
     //     this.position.x = x;
     //     this.position.y = y;
     update(boids,obs) {
-        this.acceleration.add(this.Ftotal(boids,obs));
-        this.velocity.add(this.acceleration);
+        // this.acceleration.add(this.Ftotal(boids,obs));
+        // this.velocity.add(this.acceleration);
         this.heading.add(this.velocity);
         this.heading.normalize();
         this.heading.mult(20);
-        this.velocity.limit(this.maxSpeed);
+        // this.velocity.limit(this.maxSpeed);
+        this.velocity.x += this.vx(this.Ftotal(boids,obs));
+        this.velocity.y += this.vy(this.Ftotal(boids,obs));
         this.position.add(this.velocity);
-        this.acceleration.mult(0);
+        // this.acceleration.mult(0);
+        this.velocity.mult(0);
     }
 
     show() {
