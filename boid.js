@@ -35,7 +35,7 @@ class Boid {
                 let r = this.rij(this.position, other.position);
                 let newr = createVector(other.size*cos(r.heading()), other.size*sin(r.heading()));
                 r.sub(newr);
-                // line(this.position.x, this.position.y, other.position.x, other.position.y);
+                // line(this.position.x, this.position.y, other.position.x, other.position.y); // Force orientation
                 r.mult(-this.k*((1/r.mag()) - (1/this.lij)));
                 F.add(r);
             }
@@ -54,9 +54,6 @@ class Boid {
         for (let o of obs) {
             let d = dist(this.position.x, this.position.y,
                 o.position.x, o.position.y);
-            // let r = this.rij(this.position, o.position);
-            // print('|rio| <= rsens : ' + (r <= this.sensing)); false? why?
-            // if(r <= this.sensing) {
             if (d - o.radius <= this.sensing) {
                 checked.push(o);
             }
