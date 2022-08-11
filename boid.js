@@ -27,8 +27,7 @@ class Boid {
     drawForceLine(F, linecolor) {
         let Fline = createVector();
         Fline.add(F);
-        Fline.normalize();
-        Fline.mult(10);
+        Fline.setMag(10);
         push(); // draw a line to show where the Force is heading
             strokeWeight(1);
             stroke(linecolor);
