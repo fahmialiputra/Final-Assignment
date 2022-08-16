@@ -1,10 +1,10 @@
 const boids = [];
 const obstacles = [];
-const num = 15;
+const num = 5;
 let aveY = 0;
-// let imgnum = 1;
-// let t = 0;
+let t = 0;
 let table;
+// let imgnum = 1;
 
 function dataTable() {
     table = new p5.Table();
@@ -25,33 +25,31 @@ function dataTable() {
 }
 
 function setup() {
-    createCanvas(1366, 400);
+    createCanvas(1366, 384);
     dataTable();
     for (let i = 0; i < num; i++) {
     	boids.push(new Boid(i));
         aveY += boids[i].position.y;
     }
+    aveY*=1/num;
     for (let i = 0; i < 8; i++) {
         if(i < 1) {
                             // Obstacle(x, y, radius, alphaLJ, Eobs, color)
-            obstacles.push(new Obstacle(width*(3/12), aveY/num, 10, 0.975, 0.01, 150));
+            obstacles.push(new Obstacle(width*(3/12), aveY, 10, 0.975, 0.01, 150));
         } else {
-            obstacles.push(new Obstacle(obstacles[i-1].position.x + 125, aveY/num, 10, 0.975, 0.01, 150));
+            obstacles.push(new Obstacle(obstacles[i-1].position.x + 125, aveY, 10, 0.975, 0.01, 150));
         }
     }
 }
 
 function draw() {
     background(50);
-    let boidlast = boids[0]; // checking who's the last
     let last = 0;
     for (let i = 1; i < boids.length; i++ ) {
-        if( boids[i].position.x < boidlast.position.x ) {
-            boidlast = boids[i];
+        if( boids[i].position.x < boids[last].position.x ) {
             last = i;
         }
     }
-    boids[last].change = true;
     for (let obs of obstacles) {
         obs.show();
     }
@@ -72,8 +70,6 @@ function draw() {
         // newRow.setNum('v.x', p5.Vector.add(boid.velocity, F).x);
         // newRow.setNum('v.y', p5.Vector.add(boid.velocity, F).y);
         // newRow.setNum('ds', boid.coherency(boids)); // coherency
-        boid.update(boids,boid.check(obstacles));
-        boid.show();
         // let r0 = boid.equilibrium(boids);
         // push();
         //     strokeWeight(1);
@@ -81,18 +77,19 @@ function draw() {
         //     line(boid.position.x, boid.position.y, boid.position.x + r0.x, boid.position.y + r0.y);
         // pop();
         // print(boid.equilibrium(boids));
-        // print(boid.equilibrium(boids));
-        // boid.change = false;
+        boid.show();
+        boid.update(boids,boid.check(obstacles),t);
     }
     // noLoop();
-    if (boidlast.position.x > width + boidlast.lij + boidlast.size) {
-        print('Process terminated');
-        // saveTable(table, 'data.csv');
+    if (boids[last].position.x >= width + boids[last].radius*2) {
+        print('End of Simulation (' + (millis()/1000) + ' s)');
         noLoop();
+        // saveTable(table, 'data.csv');
     }
     // } else {
     //     saveimg();
     // }
+    t++;
 }
 
 function saveimg() { // saving img per frame
