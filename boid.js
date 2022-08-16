@@ -2,7 +2,6 @@ class Boid {
     constructor(index) {
         this.position = createVector(random(10, width/6 - 50), random(height*(1/4), height*(3/4)));
         this.radius = 2.5;
-        this.heading = createVector();
         this.sensing = 50; // sensing radius
         this.velocity = createVector();
         this.maxSpeed = 4;
@@ -19,19 +18,19 @@ class Boid {
         this.wg = 4;
         this.Er = createVector(random(0,0.1),random(0,0.1));
         this.Et = random(-PI/12,PI/12);
-        this.change = false;
         this.index = index;
         this.color = color(255,255,255);
     }
 
-    drawForceLine(F, linecolor) {
+    drawForceLine(F, linecolor) { // draw a line to show where the Force is heading
         let Fline = createVector();
         Fline.add(F);
         Fline.setMag(10);
-        push(); // draw a line to show where the Force is heading
+        push();
             strokeWeight(1);
             stroke(linecolor);
-            line(this.position.x, this.position.y, this.position.x + Fline.x, this.position.y + Fline.y);
+            line(this.position.x, this.position.y,
+                this.position.x + Fline.x, this.position.y + Fline.y);
         pop();
     }
 
@@ -65,10 +64,10 @@ class Boid {
         return F;
     }
 
-    Fg() {
+    Fg(t) {
         let F = createVector();
         F.add(this.vd);
-        F.mult(this.wg);
+        F.mult(this.wg*(1-exp(-sqrt(0.8*t)))); // adding exponential formula to gather the boids first
         // this.drawForceLine(F, color(0,0,255));
         return F;
     }
@@ -101,12 +100,13 @@ class Boid {
         return F;
     }
 
-    Ftotal(boids,obs) {
+    Ftotal(boids,obs,t) {
         let F = createVector();
         F.add(this.Fi(boids));
-        F.add(this.Fg(this.vd));
+        F.add(this.Fg(t));
         F.sub(this.Fobs(obs));
-        this.drawForceLine(F, color(0,255,0));
+        this.drawForceLine(F, color(0,0,255));
+        this.heading = F.heading();
         return F; // returns a vector number
     }
 
@@ -125,6 +125,7 @@ class Boid {
     }
 
     vy(Fi) {
+        print('theta: ' + degrees(this.thetai(Fi)));
         return this.vx(Fi)*tan(this.thetai(Fi));
     } 
 
@@ -141,8 +142,8 @@ class Boid {
         return ds;
     }
 
-    update(boids,obs) {
-        this.velocity.add(this.Ftotal(boids,obs));
+    update(boids,obs,t) {
+        this.velocity.add(this.Ftotal(boids,obs,t));
         this.velocity.limit(this.maxSpeed);
         this.position.add(this.velocity);
         this.velocity.mult(0);
@@ -152,5 +153,16 @@ class Boid {
         strokeWeight(this.radius*2);
         stroke(this.color);
         point(this.position.x, this.position.y);
+        this.sensingarea(this.heading);
+    }
+
+    sensingarea(headingto) {
+        strokeWeight(1);
+        stroke(0,255,0,25);
+        noFill();
+        arc(this.position.x, this.position.y,
+            this.sensing*2, this.sensing*2,
+            headingto - PI*(4/9), headingto + PI*(4/9),
+            PIE);
     }
 }
